@@ -1,0 +1,14 @@
+# Diameter Gy Protocol Implementation Requirements
+
+# Required dependencies
+PyYAML>=6.0  # For loading AVP definitions from YAML
+
+# Optional: Bromelia library for full Diameter stack functionality
+# Uncomment to install:
+bromelia>=0.6.0
+
+# Core dependencies (included in Python standard library)
+# - dataclasses (Python 3.7+)
+# - enum (Python 3.4+)
+# - typing (Python 3.5+)
+

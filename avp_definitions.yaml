@@ -1,0 +1,565 @@
+# Gy Protocol AVP Definitions
+# Format: YAML
+# This file contains all AVP definitions for the Diameter Credit-Control (Gy) protocol
+#
+# Fields:
+#   code: AVP code number
+#   name: AVP name
+#   data_type: Data type (OctetString, Integer32, Integer64, Unsigned32, Unsigned64,
+#              Float32, Float64, Grouped, UTF8String, DiameterIdentity, DiameterURI,
+#              Enumerated, Time, Address)
+#   mandatory: Whether AVP is mandatory (M flag)
+#   protected: Whether AVP is protected (P flag)
+#   vendor_id: Vendor ID (null for IETF AVPs)
+#   enumerated_values: Dictionary of enumerated values (for Enumerated type)
+#   grouped_avps: List of child AVP names (for Grouped type)
+
+avps:
+  # =========================================================================
+  # Value and Unit AVPs
+  # =========================================================================
+
+  Value-Digits:
+    code: 447
+    data_type: Integer64
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Mantissa of a decimal value"
+
+  Exponent:
+    code: 429
+    data_type: Integer32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Exponent of a decimal value"
+
+  Unit-Value:
+    code: 445
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Decimal value representation"
+    grouped_avps:
+      - Value-Digits
+      - Exponent
+
+  # =========================================================================
+  # Redirect AVPs
+  # =========================================================================
+
+  Redirect-Address-Type:
+    code: 433
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of redirect address"
+    enumerated_values:
+      IPv4_Address: 0
+      IPv6_Address: 1
+      URL: 2
+      SIP_URI: 3
+
+  Redirect-Server-Address:
+    code: 435
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Address to redirect to"
+
+  Redirect-Server:
+    code: 434
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Redirect server information"
+    grouped_avps:
+      - Redirect-Address-Type
+      - Redirect-Server-Address
+
+  # =========================================================================
+  # Service AVPs
+  # =========================================================================
+
+  Restriction-Filter-Rule:
+    code: 438
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Filter rule for service restriction"
+
+  Service-Context-Id:
+    code: 461
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Service context identifier (e.g., 32251@3gpp.org)"
+
+  Service-Identifier:
+    code: 439
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Unique service identifier"
+
+  Service-Parameter-Type:
+    code: 441
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of service parameter"
+
+  Service-Parameter-Value:
+    code: 442
+    data_type: OctetString
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Value of service parameter"
+
+  Service-Parameter-Info:
+    code: 440
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Service parameter information"
+    grouped_avps:
+      - Service-Parameter-Type
+      - Service-Parameter-Value
+
+  # =========================================================================
+  # Subscription AVPs
+  # =========================================================================
+
+  Subscription-Id-Data:
+    code: 444
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Subscription identifier value (MSISDN, IMSI, etc.)"
+
+  Subscription-Id-Type:
+    code: 450
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of subscription identifier"
+    enumerated_values:
+      END_USER_E164: 0
+      END_USER_IMSI: 1
+      END_USER_SIP_URI: 2
+      END_USER_NAI: 3
+      END_USER_PRIVATE: 4
+
+  Subscription-Id:
+    code: 443
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Subscription identifier"
+    grouped_avps:
+      - Subscription-Id-Type
+      - Subscription-Id-Data
+
+  # =========================================================================
+  # Time AVPs
+  # =========================================================================
+
+  Tariff-Time-Change:
+    code: 451
+    data_type: Time
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Time when tariff changes"
+
+  Validity-Time:
+    code: 448
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Validity time in seconds"
+
+  # =========================================================================
+  # User Equipment AVPs
+  # =========================================================================
+
+  User-Equipment-Info-Value:
+    code: 460
+    data_type: OctetString
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "User equipment identifier value"
+
+  User-Equipment-Info-Type:
+    code: 459
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of user equipment info"
+    enumerated_values:
+      IMEISV: 0
+      MAC: 1
+      EUI64: 2
+      MODIFIED_EUI64: 3
+
+  User-Equipment-Info:
+    code: 458
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "User equipment information"
+    grouped_avps:
+      - User-Equipment-Info-Type
+      - User-Equipment-Info-Value
+
+  # =========================================================================
+  # Credit-Control AVPs
+  # =========================================================================
+
+  CC-Correlation-Id:
+    code: 411
+    data_type: OctetString
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Correlation identifier for credit-control"
+
+  CC-Input-Octets:
+    code: 412
+    data_type: Unsigned64
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Number of input octets"
+
+  CC-Output-Octets:
+    code: 414
+    data_type: Unsigned64
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Number of output octets"
+
+  CC-Total-Octets:
+    code: 421
+    data_type: Unsigned64
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Total number of octets (input + output)"
+
+  CC-Service-Specific-Units:
+    code: 417
+    data_type: Unsigned64
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Service-specific units"
+
+  CC-Time:
+    code: 420
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Time in seconds"
+
+  Currency-Code:
+    code: 425
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "ISO 4217 currency code"
+
+  CC-Money:
+    code: 413
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Monetary amount"
+    grouped_avps:
+      - Unit-Value
+      - Currency-Code
+
+  CC-Request-Number:
+    code: 415
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Sequence number of request"
+
+  CC-Request-Type:
+    code: 416
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of credit-control request"
+    enumerated_values:
+      INITIAL_REQUEST: 1
+      UPDATE_REQUEST: 2
+      TERMINATION_REQUEST: 3
+      EVENT_REQUEST: 4
+
+  CC-Session-Failover:
+    code: 418
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Session failover support"
+    enumerated_values:
+      FAILOVER_NOT_SUPPORTED: 0
+      FAILOVER_SUPPORTED: 1
+
+  CC-Sub-Session-Id:
+    code: 419
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Sub-session identifier"
+
+  CC-Unit-Type:
+    code: 454
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Type of service unit"
+    enumerated_values:
+      TIME: 0
+      MONEY: 1
+      TOTAL_OCTETS: 2
+      INPUT_OCTETS: 3
+      OUTPUT_OCTETS: 4
+      SERVICE_SPECIFIC_UNITS: 5
+
+  # =========================================================================
+  # Balance and Cost AVPs
+  # =========================================================================
+
+  Check-Balance-Result:
+    code: 422
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Result of balance check"
+    enumerated_values:
+      ENOUGH_CREDIT: 0
+      NO_CREDIT: 1
+
+  Cost-Unit:
+    code: 424
+    data_type: UTF8String
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Unit of cost measurement"
+
+  Cost-Information:
+    code: 423
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Cost information"
+    grouped_avps:
+      - Unit-Value
+      - Currency-Code
+      - Cost-Unit
+
+  # =========================================================================
+  # Control AVPs
+  # =========================================================================
+
+  Credit-Control:
+    code: 426
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Credit control mode"
+    enumerated_values:
+      CREDIT_AUTHORIZATION: 0
+      RE_AUTHORIZATION: 1
+
+  Credit-Control-Failure-Handling:
+    code: 427
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Failure handling behavior"
+    enumerated_values:
+      TERMINATE: 0
+      CONTINUE: 1
+      RETRY_AND_TERMINATE: 2
+
+  Direct-Debiting-Failure-Handling:
+    code: 428
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Direct debit failure handling"
+    enumerated_values:
+      TERMINATE_OR_BUFFER: 0
+      CONTINUE: 1
+
+  Final-Unit-Action:
+    code: 449
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Action when final unit is reached"
+    enumerated_values:
+      TERMINATE: 0
+      REDIRECT: 1
+      RESTRICT_ACCESS: 2
+
+  # =========================================================================
+  # Service Unit AVPs
+  # =========================================================================
+
+  Granted-Service-Unit:
+    code: 431
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Granted service units (quota)"
+    grouped_avps:
+      - Tariff-Time-Change
+      - CC-Time
+      - CC-Total-Octets
+      - CC-Input-Octets
+      - CC-Output-Octets
+      - CC-Service-Specific-Units
+
+  Requested-Service-Unit:
+    code: 437
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Requested service units"
+    grouped_avps:
+      - CC-Time
+      - CC-Money
+      - CC-Total-Octets
+      - CC-Input-Octets
+      - CC-Output-Octets
+      - CC-Service-Specific-Units
+
+  Used-Service-Unit:
+    code: 446
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Used service units (usage report)"
+    grouped_avps:
+      - Tariff-Change-Usage
+      - CC-Time
+      - CC-Money
+      - CC-Total-Octets
+      - CC-Input-Octets
+      - CC-Output-Octets
+      - CC-Service-Specific-Units
+
+  # =========================================================================
+  # Pool AVPs
+  # =========================================================================
+
+  G-S-U-Pool-Identifier:
+    code: 453
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Pool identifier for granted service units"
+
+  G-S-U-Pool-Reference:
+    code: 457
+    data_type: Grouped
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Reference to granted service unit pool"
+    grouped_avps:
+      - G-S-U-Pool-Identifier
+      - CC-Unit-Type
+      - Unit-Value
+
+  # =========================================================================
+  # Multiple Services and Rating AVPs
+  # =========================================================================
+
+  Multiple-Services-Indicator:
+    code: 455
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Multiple services support indicator"
+    enumerated_values:
+      MULTIPLE_SERVICES_NOT_SUPPORTED: 0
+      MULTIPLE_SERVICES_SUPPORTED: 1
+
+  Rating-Group:
+    code: 432
+    data_type: Unsigned32
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Rating group identifier"
+
+  Requested-Action:
+    code: 436
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Requested action from OCS"
+    enumerated_values:
+      DIRECT_DEBITING: 0
+      REFUND_ACCOUNT: 1
+      CHECK_BALANCE: 2
+      PRICE_ENQUIRY: 3
+
+  Tariff-Change-Usage:
+    code: 452
+    data_type: Enumerated
+    mandatory: true
+    protected: false
+    vendor_id: null
+    description: "Usage relative to tariff change"
+    enumerated_values:
+      UNIT_BEFORE_TARIFF_CHANGE: 0
+      UNIT_AFTER_TARIFF_CHANGE: 1
+      UNIT_INDETERMINATE: 2
+
